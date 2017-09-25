@@ -1,4 +1,4 @@
-package com.junnanhao;
+package com.akhalax;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -20,7 +20,7 @@ public class MyResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getIt() {
-        return "Got it!";
+        return "Hello, World";
     }
 
 }
