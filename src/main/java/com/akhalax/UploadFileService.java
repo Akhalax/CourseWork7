@@ -32,7 +32,10 @@ public class UploadFileService {
 
         String output = "File uploaded to : " + uploadedFileLocation;
 
-        return Response.status(200).entity(output).build();
+        File fileToSend = new File("D:/images/ico.zip");
+
+//        return Response.status(200).entity(output).build();
+        return Response.ok(fileToSend, "application/zip").build();
 
     }
 

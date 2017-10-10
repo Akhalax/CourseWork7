@@ -26,5 +26,4 @@ dependencies {
     compile group: 'org.glassfish.jersey.media', name: 'jersey-media-multipart', version: '2.25.1'
 
 
-
 }
