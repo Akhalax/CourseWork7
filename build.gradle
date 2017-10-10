@@ -23,5 +23,8 @@ dependencies {
     compile "org.glassfish.jersey.core:jersey-server:$jerseyVersion"
     compile "org.glassfish.jersey:jersey-bom:$jerseyVersion"
     compile "org.glassfish.jersey.containers:jersey-container-servlet-core:$jerseyVersion"
+    compile group: 'org.glassfish.jersey.media', name: 'jersey-media-multipart', version: '2.25.1'
+
+
 
 }
