@@ -1,5 +1,6 @@
 package com.akhalax;
 
+import org.glassfish.jersey.media.multipart.ContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
@@ -8,12 +9,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import java.nio.charset.Charset;
+import java.util.Date;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
 
 
 @Path("/file")
@@ -28,7 +29,6 @@ public class UploadFileService {
 
         String iOSIconsFolder = null;
         String iOSIconsZip = null;
-
 
         String uploadedFileLocation = "d://upload/"
                 + fileDetail.getFileName();
@@ -51,10 +51,18 @@ public class UploadFileService {
 
         String output = "File uploaded to : " + uploadedFileLocation + "\nFile converted.";
 
+        if (iOSIconsZip == null) {
+            return Response.serverError().entity("Empty zip archive").build();
+        }
+
         File fileToSend = new File(iOSIconsZip);
 
+
+        ContentDisposition contentDisposition = ContentDisposition.type("attachment")
+                .fileName("iOSIcons.zip").creationDate(new Date()).build();
+
         //return Response.status(200).entity(output).build();
-        return Response.ok(fileToSend, "application/zip").build();
+        return Response.ok(fileToSend, "application/zip").header("Content-Disposition",contentDisposition).build();
 
     }
 
