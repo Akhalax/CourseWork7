@@ -2,14 +2,16 @@ package com.akhalax;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.imageio.ImageIO;
 
 class ImageResizer {
@@ -70,18 +72,22 @@ class ImageResizer {
 
     static void resize(String inputImagePath, String type)
             throws IOException {
-
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss");
+        Date date = new Date();
+        File file = new File("D:/images/"+ dateFormat.format(date));
+        if (!file.exists()) {
+            if (!file.mkdir()) {
+                throw new FileNotFoundException();
+            }
+        }
         for (iOSIcons aList : list) {
             BufferedImage img = ImageResizer.resize(inputImagePath, aList.width, aList.height);
-            ImageIO.write(img, "png", new File("D:/images/" + aList.name + ".png"));
+            ImageIO.write(img, "png", new File(file + "/" + aList.name + ".png"));
         }
 
     }
 
-    /**
-     * Test resizing images
-     */
-//    public static void main(String[] args) {
+    //    public static void main(String[] args) {
 //
 //        String inputImagePath = "D:/images/img.jpg";
 //        try {
