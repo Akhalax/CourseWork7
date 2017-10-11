@@ -12,26 +12,35 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
-
-public class ImageResizer {
+class ImageResizer {
 
     public static class iOSIcons {
         int width;
         int height;
         String name;
 
-        public iOSIcons(int width, int height, String name) {
+        iOSIcons(int width, int height, String name) {
             this.width = width;
             this.height = height;
             this.name = name;
         }
     }
 
-    static ArrayList<iOSIcons> listIOSIcons = new  ArrayList<iOSIcons> (12);
-    public static void addIcons(int width, int height, String name){
-        iOSIcons newIcon = new iOSIcons(width,height, name);
-        listIOSIcons.add(newIcon);
-    }
+
+    private static ArrayList<iOSIcons> list = new ArrayList<iOSIcons>() {{
+        add(new iOSIcons(29,29,"Icon-Small"));
+        add(new iOSIcons(58,58,"Icon-Small@2x"));
+        add(new iOSIcons(87,87,"Icon-Small@3x"));
+        add(new iOSIcons(40,40,"Icon-40"));
+        add(new iOSIcons(80,80,"Icon-40@2x"));
+        add(new iOSIcons(120,120,"Icon-40@3x"));
+        add(new iOSIcons(120,120,"Icon-60@2x"));
+        add(new iOSIcons(180,180,"Icon-60@3x"));
+        add(new iOSIcons(76,76,"Icon-76"));
+        add(new iOSIcons(120,120,"Icon-120"));
+        add(new iOSIcons(512, 512, "iTunesArtwork"));
+        add(new iOSIcons(1024, 1024, "iTunesArtwork@2x"));
+    }};
 
     /**
      * Resizes an image to a absolute width and height (the image may not be
@@ -39,10 +48,9 @@ public class ImageResizer {
      * @param inputImagePath Path of the original image
      * @param scaledWidth absolute width in pixels
      * @param scaledHeight absolute height in pixels
-     * @throws IOException
      */
-    public static BufferedImage resize(String inputImagePath,
-                               int scaledWidth, int scaledHeight)
+    private static BufferedImage resize(String inputImagePath,
+                                        int scaledWidth, int scaledHeight)
             throws IOException {
         // reads input image
         File inputFile = new File(inputImagePath);
@@ -58,44 +66,30 @@ public class ImageResizer {
         g2d.dispose();
 
         return outputImage;
-        // extracts extension of output file
-
-//        String formatName = outputImagePath.substring(outputImagePath
-//                .lastIndexOf(".") + 1);
-
-        // writes to output file
-//        ImageIO.write(outputImage, formatName, new File(outputImagePath));
     }
+
+    static void resize(String inputImagePath, String type)
+            throws IOException {
+
+        for (iOSIcons aList : list) {
+            BufferedImage img = ImageResizer.resize(inputImagePath, aList.width, aList.height);
+            ImageIO.write(img, "png", new File("D:/images/" + aList.name + ".png"));
+        }
+
+    }
+
     /**
      * Test resizing images
      */
-    public static void main(String[] args) {
-
-        addIcons(29,29,"Icon-Small");
-        addIcons(58,58,"Icon-Small@2x");
-        addIcons(87,87,"Icon-Small@3x");
-        addIcons(40,40,"Icon-40");
-        addIcons(80,80,"Icon-40@2x");
-        addIcons(120,120,"Icon-40@3x");
-        addIcons(120,120,"Icon-60@2x");
-        addIcons(180,180,"Icon-60@3x");
-        addIcons(76,76,"Icon-76");
-        addIcons(120,120,"Icon-120");
-        addIcons(512, 512, "iTunesArtwork");
-        addIcons(1024, 1024, "iTunesArtwork@2x");
-
-        String inputImagePath = "D:/images/img.jpg";
-
-        try {
-            for (int i =0; i < listIOSIcons.size(); i++) {
-                BufferedImage img = ImageResizer.resize(inputImagePath, listIOSIcons.get(i).width, listIOSIcons.get(i).height);
-                ImageIO.write(img, "png", new File("D:/images/" + listIOSIcons.get(i).name +".png"));
-            }
-
-        } catch (IOException ex) {
-            System.out.println("Error resizing the image.");
-            ex.printStackTrace();
-        }
-    }
+//    public static void main(String[] args) {
+//
+//        String inputImagePath = "D:/images/img.jpg";
+//        try {
+//            resize(inputImagePath, "iOS");
+//        } catch (IOException e) {
+//            System.out.println("Error resizing the image.");
+//            e.printStackTrace();
+//        }
+//    }
 
 }

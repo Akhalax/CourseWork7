@@ -24,18 +24,25 @@ public class UploadFileService {
             @FormDataParam("file") InputStream uploadedInputStream,
             @FormDataParam("file") FormDataContentDisposition fileDetail) {
 
-        String uploadedFileLocation = "d://uploaded/"
+        String uploadedFileLocation = "d://upload/"
                 + fileDetail.getFileName();
 
         // save it
         writeToFile(uploadedInputStream, uploadedFileLocation);
 
-        String output = "File uploaded to : " + uploadedFileLocation;
+        try {
+            ImageResizer.resize(uploadedFileLocation, "iOS");
+        } catch (IOException e) {
+            System.out.println("Error resizing the image.");
+            e.printStackTrace();
+        }
+
+        String output = "File uploaded to : " + uploadedFileLocation + "\nFile converted.";
 
         File fileToSend = new File("D:/images/ico.zip");
 
-//        return Response.status(200).entity(output).build();
-        return Response.ok(fileToSend, "application/zip").build();
+        return Response.status(200).entity(output).build();
+        //return Response.ok(fileToSend, "application/zip").build();
 
     }
 
