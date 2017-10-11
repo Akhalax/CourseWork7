@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -20,16 +21,21 @@ public class UploadFileService {
     @POST
     @Path("/upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces({"application/zip"})
     public Response uploadFile(
             @FormDataParam("file") InputStream uploadedInputStream,
             @FormDataParam("file") FormDataContentDisposition fileDetail) {
+
+        String iOSIconsFolder = null;
+        String iOSIconsZip = null;
+
 
         String uploadedFileLocation = "d://upload/"
                 + fileDetail.getFileName();
 
         // save it
         writeToFile(uploadedInputStream, uploadedFileLocation);
-        String iOSIconsFolder = null;
+
         try {
             iOSIconsFolder = ImageResizer.resize(uploadedFileLocation, "iOS");
         } catch (IOException e) {
@@ -37,7 +43,7 @@ public class UploadFileService {
             e.printStackTrace();
         }
         try {
-            Zip.zip(iOSIconsFolder);
+            iOSIconsZip = Zip.zip(iOSIconsFolder);
         } catch (IOException e) {
             System.err.println("Error archiving the images.");
             e.printStackTrace();
@@ -45,10 +51,10 @@ public class UploadFileService {
 
         String output = "File uploaded to : " + uploadedFileLocation + "\nFile converted.";
 
-        File fileToSend = new File("D:/images/ico.zip");
+        File fileToSend = new File(iOSIconsZip);
 
-        return Response.status(200).entity(output).build();
-        //return Response.ok(fileToSend, "application/zip").build();
+        //return Response.status(200).entity(output).build();
+        return Response.ok(fileToSend, "application/zip").build();
 
     }
 
