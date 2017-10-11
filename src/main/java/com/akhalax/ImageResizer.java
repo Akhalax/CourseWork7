@@ -28,7 +28,6 @@ class ImageResizer {
         }
     }
 
-
     private static ArrayList<iOSIcons> list = new ArrayList<iOSIcons>() {{
         add(new iOSIcons(29,29,"Icon-Small"));
         add(new iOSIcons(58,58,"Icon-Small@2x"));
@@ -70,9 +69,9 @@ class ImageResizer {
         return outputImage;
     }
 
-    static void resize(String inputImagePath, String type)
+    static String resize(String inputImagePath, String type)
             throws IOException {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss-SS");
         Date date = new Date();
         File file = new File("D:/images/"+ dateFormat.format(date));
         if (!file.exists()) {
@@ -84,7 +83,7 @@ class ImageResizer {
             BufferedImage img = ImageResizer.resize(inputImagePath, aList.width, aList.height);
             ImageIO.write(img, "png", new File(file + "/" + aList.name + ".png"));
         }
-
+        return file + "/";
     }
 
     //    public static void main(String[] args) {

@@ -29,11 +29,17 @@ public class UploadFileService {
 
         // save it
         writeToFile(uploadedInputStream, uploadedFileLocation);
-
+        String iOSIconsFolder = null;
         try {
-            ImageResizer.resize(uploadedFileLocation, "iOS");
+            iOSIconsFolder = ImageResizer.resize(uploadedFileLocation, "iOS");
         } catch (IOException e) {
-            System.out.println("Error resizing the image.");
+            System.err.println("Error resizing the image.");
+            e.printStackTrace();
+        }
+        try {
+            Zip.zip(iOSIconsFolder);
+        } catch (IOException e) {
+            System.err.println("Error archiving the images.");
             e.printStackTrace();
         }
 
