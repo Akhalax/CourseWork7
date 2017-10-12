@@ -7,40 +7,53 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import javax.imageio.ImageIO;
 
 class ImageResizer {
 
-    public static class iOSIcons {
+    public static class Icons {
         int width;
         int height;
         String name;
+        String type;
 
-        iOSIcons(int width, int height, String name) {
+        Icons(int width, int height, String name, String type) {
             this.width = width;
             this.height = height;
             this.name = name;
+            this.type = type;
         }
     }
 
-    private static ArrayList<iOSIcons> list = new ArrayList<iOSIcons>() {{
-        add(new iOSIcons(29,29,"Icon-Small"));
-        add(new iOSIcons(58,58,"Icon-Small@2x"));
-        add(new iOSIcons(87,87,"Icon-Small@3x"));
-        add(new iOSIcons(40,40,"Icon-40"));
-        add(new iOSIcons(80,80,"Icon-40@2x"));
-        add(new iOSIcons(120,120,"Icon-40@3x"));
-        add(new iOSIcons(120,120,"Icon-60@2x"));
-        add(new iOSIcons(180,180,"Icon-60@3x"));
-        add(new iOSIcons(76,76,"Icon-76"));
-        add(new iOSIcons(120,120,"Icon-120"));
-        add(new iOSIcons(512, 512, "iTunesArtwork"));
-        add(new iOSIcons(1024, 1024, "iTunesArtwork@2x"));
+    private static ArrayList<Icons> listIOS = new ArrayList<Icons>() {{
+        add(new Icons(29,29,"Icon-Small", "Icons for apps"));
+        add(new Icons(58,58,"Icon-Small@2x", "Icons for apps"));
+        add(new Icons(87,87,"Icon-Small@3x", "Icons for apps"));
+        add(new Icons(40,40,"Icon-40", "Icons for apps"));
+        add(new Icons(80,80,"Icon-40@2x", "Icons for apps"));
+        add(new Icons(120,120,"Icon-60@2x", "Icons for apps"));
+        add(new Icons(180,180,"Icon-60@3x", "Icons for apps"));
+        add(new Icons(120,120,"Icon-40@3x", "Icons for apps"));
+        add(new Icons(76,76,"Icon-76", "Icons for apps"));
+        add(new Icons(120,120,"Icon-120", "Icons for apps"));
+        add(new Icons(512, 512, "iTunesArtwork", "Icons for apps"));
+        add(new Icons(1024, 1024, "iTunesArtwork@2x", "Icons for apps"));
+    }};
+
+    public static ArrayList<Icons> listAndroid = new ArrayList<Icons>() {{
+        add(new Icons(48,48, "mdpi", "Launcher icons"));
+        add(new Icons(72,72, "hdpi", "Launcher icons"));
+        add(new Icons(96,96, "xhdpi", "Launcher icons"));
+        add(new Icons(144,144, "xxhdpi", "Launcher icons"));
+        add(new Icons(192,192, "xxxhdpi", "Launcher icons"));
+        add(new Icons(512,512, "GPStore", "Launcher icons"));
+        add(new Icons(16,16, "mdpi", "Small Contextual Icons"));
+        add(new Icons(24,24, "hdpi", "Small Contextual Icons"));
+        add(new Icons(32,32, "xhdpi", "Small Contextual Icons"));
+        add(new Icons(48,48, "xxhdpi", "Small Contextual Icons"));
+        add(new Icons(64,64, "xxxhdpi", "Small Contextual Icons"));
     }};
 
     /**
@@ -73,28 +86,18 @@ class ImageResizer {
             throws IOException {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss-SS");
         Date date = new Date();
-        File file = new File("D:/images/"+ dateFormat.format(date));
+        File file = new File("D:/images/"+type + "/" + dateFormat.format(date));
         if (!file.exists()) {
             if (!file.mkdir()) {
                 throw new FileNotFoundException();
             }
         }
-        for (iOSIcons aList : list) {
+        for (Icons aList : listIOS) {
             BufferedImage img = ImageResizer.resize(inputImagePath, aList.width, aList.height);
             ImageIO.write(img, "png", new File(file + "/" + aList.name + ".png"));
         }
         return file + "/";
     }
 
-    //    public static void main(String[] args) {
-//
-//        String inputImagePath = "D:/images/img.jpg";
-//        try {
-//            resize(inputImagePath, "iOS");
-//        } catch (IOException e) {
-//            System.out.println("Error resizing the image.");
-//            e.printStackTrace();
-//        }
-//    }
 
 }

@@ -25,7 +25,8 @@ public class UploadFileService {
     @Produces({"application/zip"})
     public Response uploadFile(
             @FormDataParam("file") InputStream uploadedInputStream,
-            @FormDataParam("file") FormDataContentDisposition fileDetail) {
+            @FormDataParam("file") FormDataContentDisposition fileDetail,
+            @FormDataParam("type") String type) {
 
         String iOSIconsFolder = null;
         String iOSIconsZip = null;
@@ -59,7 +60,7 @@ public class UploadFileService {
 
 
         ContentDisposition contentDisposition = ContentDisposition.type("attachment")
-                .fileName("iOSIcons.zip").creationDate(new Date()).build();
+                .fileName("Icons.zip").creationDate(new Date()).build();
 
         //return Response.status(200).entity(output).build();
         return Response.ok(fileToSend, "application/zip").header("Content-Disposition",contentDisposition).build();

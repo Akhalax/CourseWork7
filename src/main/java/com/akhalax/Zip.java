@@ -22,7 +22,14 @@ class Zip {
                 //file = folder + file;
                 FileInputStream fi = new
                         FileInputStream(folder + file);
-                ZipEntry entry = new ZipEntry(file);
+                ZipEntry entry = null;
+                if (folder.contains("Android")) {
+                    // TO DO CODE HERE
+                    entry = new ZipEntry(file);
+                }
+                else {
+                    entry = new ZipEntry(file);
+                }
                 out.putNextEntry(entry);
                 byte[] buffer = new byte[fi.available()];
                 fi.read(buffer);
