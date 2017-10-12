@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
+
 class ImageResizer {
 
     public static class Icons {
@@ -86,16 +87,45 @@ class ImageResizer {
             throws IOException {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss-SS");
         Date date = new Date();
-        File file = new File("D:/images/"+type + "/" + dateFormat.format(date));
+        File pathAndroidType;
+        File file = new File("D:/images/"+type);
         if (!file.exists()) {
             if (!file.mkdir()) {
                 throw new FileNotFoundException();
             }
         }
-        for (Icons aList : listIOS) {
-            BufferedImage img = ImageResizer.resize(inputImagePath, aList.width, aList.height);
-            ImageIO.write(img, "png", new File(file + "/" + aList.name + ".png"));
+        file = new File(file +"/" + dateFormat.format(date));
+        if (!file.exists()) {
+            if (!file.mkdir()) {
+                throw new FileNotFoundException();
+            }
         }
+
+        switch (type) {
+            case "iOS": {
+                for (Icons aList : listIOS) {
+                    BufferedImage img = ImageResizer.resize(inputImagePath, aList.width, aList.height);
+                    ImageIO.write(img, "png", new File(file + "/" + aList.name + ".png"));
+                }
+                break;
+            }
+            case "Android": {
+                for (Icons aList : listAndroid) {
+                    BufferedImage img = ImageResizer.resize(inputImagePath, aList.width, aList.height);
+                    if(!(pathAndroidType = new File(file + "/" + aList.type)).exists())
+                    {
+                        if (!pathAndroidType.mkdir()) {
+                            throw new FileNotFoundException("Failed to create Android type dir");
+                        }
+                    }
+                    ImageIO.write(img, "png", new File(pathAndroidType + "/" + aList.name + ".png"));
+                }
+            }
+            break;
+            default: throw new IOException("invalid type");
+        }
+
+
         return file + "/";
     }
 

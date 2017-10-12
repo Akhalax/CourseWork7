@@ -4,17 +4,14 @@ import org.glassfish.jersey.media.multipart.ContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-import java.util.Date;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.StreamingOutput;
+import java.io.*;
+import java.util.Date;
 
 
 @Path("/file")
@@ -38,7 +35,7 @@ public class UploadFileService {
         writeToFile(uploadedInputStream, uploadedFileLocation);
 
         try {
-            iOSIconsFolder = ImageResizer.resize(uploadedFileLocation, "iOS");
+            iOSIconsFolder = ImageResizer.resize(uploadedFileLocation, type);
         } catch (IOException e) {
             System.err.println("Error resizing the image.");
             e.printStackTrace();
