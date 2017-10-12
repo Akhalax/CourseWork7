@@ -20,12 +20,12 @@ class Zip {
             for (String file : files) {
                 if (Objects.equals(file, "icons.zip")) continue;
                 //file = folder + file;
+
                 FileInputStream fi = new
                         FileInputStream(folder + file);
-                ZipEntry entry = null;
-                if (folder.contains("Android")) {
-                    // TO DO CODE HERE
-                    entry = new ZipEntry(file);
+                ZipEntry entry;
+                if (folder.contains("android")) {
+                      entry = new ZipEntry(file.substring(0,file.indexOf("!")) + "/" + file.substring(file.indexOf("!")+1, file.length()));
                 }
                 else {
                     entry = new ZipEntry(file);

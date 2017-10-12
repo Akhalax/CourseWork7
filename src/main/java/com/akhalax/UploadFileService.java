@@ -23,11 +23,11 @@ public class UploadFileService {
     public Response uploadFile(
             @FormDataParam("file") InputStream uploadedInputStream,
             @FormDataParam("file") FormDataContentDisposition fileDetail,
-            @FormDataParam("type") String type) {
+            @FormDataParam("device") String type) {
 
-        String iOSIconsFolder = null;
-        String iOSIconsZip = null;
-
+        String IconsFolder = null;
+        String IconsZip = null;
+        type = type.toLowerCase();
         String uploadedFileLocation = "d://upload/"
                 + fileDetail.getFileName();
 
@@ -35,25 +35,23 @@ public class UploadFileService {
         writeToFile(uploadedInputStream, uploadedFileLocation);
 
         try {
-            iOSIconsFolder = ImageResizer.resize(uploadedFileLocation, type);
+            IconsFolder = ImageResizer.resize(uploadedFileLocation, type);
         } catch (IOException e) {
             System.err.println("Error resizing the image.");
             e.printStackTrace();
         }
         try {
-            iOSIconsZip = Zip.zip(iOSIconsFolder);
+            IconsZip = Zip.zip(IconsFolder);
         } catch (IOException e) {
             System.err.println("Error archiving the images.");
             e.printStackTrace();
         }
 
-        String output = "File uploaded to : " + uploadedFileLocation + "\nFile converted.";
-
-        if (iOSIconsZip == null) {
+        if (IconsZip == null) {
             return Response.serverError().entity("Empty zip archive").build();
         }
 
-        File fileToSend = new File(iOSIconsZip);
+        File fileToSend = new File(IconsZip);
 
 
         ContentDisposition contentDisposition = ContentDisposition.type("attachment")
@@ -72,7 +70,7 @@ public class UploadFileService {
             new FileOutputStream(new File(
                     uploadedFileLocation));
             OutputStream out;
-            int read = 0;
+            int read;
             byte[] bytes = new byte[1024];
 
             out = new FileOutputStream(new File(uploadedFileLocation));

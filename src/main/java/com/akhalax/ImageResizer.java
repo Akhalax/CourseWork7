@@ -10,6 +10,7 @@ import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Objects;
 
 
 class ImageResizer {
@@ -43,7 +44,7 @@ class ImageResizer {
         add(new Icons(1024, 1024, "iTunesArtwork@2x", "Icons for apps"));
     }};
 
-    public static ArrayList<Icons> listAndroid = new ArrayList<Icons>() {{
+    private static ArrayList<Icons> listAndroid = new ArrayList<Icons>() {{
         add(new Icons(48,48, "mdpi", "Launcher icons"));
         add(new Icons(72,72, "hdpi", "Launcher icons"));
         add(new Icons(96,96, "xhdpi", "Launcher icons"));
@@ -85,9 +86,9 @@ class ImageResizer {
 
     static String resize(String inputImagePath, String type)
             throws IOException {
+        if (!Objects.equals(type, "ios") && !Objects.equals(type, "android")) throw new IOException("invalid type");
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss-SS");
         Date date = new Date();
-        File pathAndroidType;
         File file = new File("D:/images/"+type);
         if (!file.exists()) {
             if (!file.mkdir()) {
@@ -102,27 +103,20 @@ class ImageResizer {
         }
 
         switch (type) {
-            case "iOS": {
+            case "ios": {
                 for (Icons aList : listIOS) {
                     BufferedImage img = ImageResizer.resize(inputImagePath, aList.width, aList.height);
                     ImageIO.write(img, "png", new File(file + "/" + aList.name + ".png"));
                 }
                 break;
             }
-            case "Android": {
+            case "android": {
                 for (Icons aList : listAndroid) {
                     BufferedImage img = ImageResizer.resize(inputImagePath, aList.width, aList.height);
-                    if(!(pathAndroidType = new File(file + "/" + aList.type)).exists())
-                    {
-                        if (!pathAndroidType.mkdir()) {
-                            throw new FileNotFoundException("Failed to create Android type dir");
-                        }
-                    }
-                    ImageIO.write(img, "png", new File(pathAndroidType + "/" + aList.name + ".png"));
+                    ImageIO.write(img, "png", new File(file + "/" + aList.type + "!" + aList.name + ".png"));
                 }
             }
             break;
-            default: throw new IOException("invalid type");
         }
 
 
