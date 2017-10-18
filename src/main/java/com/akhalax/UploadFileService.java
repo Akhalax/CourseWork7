@@ -52,7 +52,7 @@ public class UploadFileService {
             return Response.serverError().entity("Empty zip archive").build();
         }
 
-        File fileToSend = new File(IconsZip);
+        //File fileToSend = new File(IconsZip);
 
 
         ContentDisposition contentDisposition = ContentDisposition.type("attachment")

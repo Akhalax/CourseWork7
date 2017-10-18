@@ -14,8 +14,7 @@ class Zip {
     static OutputStream zip(HashMap<String, BufferedImage> folder) throws IOException {
         File dest = new
                 File(folder+"icons.zip");
-        ZipOutputStream out = new ZipOutputStream(new
-                FileOutputStream(dest));
+        ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(new File("icons.zip"))));
         // get a list of files from current directory
         //File f = new File(folder);
         //String files[] = f.list();

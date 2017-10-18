@@ -59,16 +59,16 @@ class ImageResizer {
     /**
      * Resizes an image to a absolute width and height (the image may not be
      * proportional)
-     * @param inputImageReceived Stream of the original image
+     * @param inputImage Stream of the original image
      * @param scaledWidth absolute width in pixels
      * @param scaledHeight absolute height in pixels
      */
-    private static BufferedImage resize(InputStream inputImageReceived,
+    private static BufferedImage resize(BufferedImage inputImage,
                                         int scaledWidth, int scaledHeight)
             throws IOException {
         // reads input image
         //File inputFile = new File(inputImagePath);
-        BufferedImage inputImage = ImageIO.read(inputImageReceived);
+        //BufferedImage inputImage = ImageIO.read(inputImageReceived);
 
         // creates output image
         BufferedImage outputImage = new BufferedImage(scaledWidth,
@@ -82,30 +82,32 @@ class ImageResizer {
         return outputImage;
     }
 
-    static HashMap<String, BufferedImage> resize(InputStream inputImage, String type)
+    static HashMap<String, BufferedImage> resize(InputStream inputImageReceived, String type)
             throws IOException {
         if (!Objects.equals(type, "ios") && !Objects.equals(type, "android")) throw new IOException("invalid type");
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss-SS");
         Date date = new Date();
         File file = new File("C:/images/"+type);
-        if (!file.exists()) {
-            if (!file.mkdir()) {
-                throw new FileNotFoundException();
-            }
-        }
-        file = new File(file +"/" + dateFormat.format(date));
-        if (!file.exists()) {
-            if (!file.mkdir()) {
-                throw new FileNotFoundException();
-            }
-        }
+
+        BufferedImage inputImage = ImageIO.read(inputImageReceived);
+//        if (!file.exists()) {
+//            if (!file.mkdir()) {
+//                throw new FileNotFoundException();
+//            }
+//        }
+//        file = new File(file +"/" + dateFormat.format(date));
+//        if (!file.exists()) {
+//            if (!file.mkdir()) {
+//                throw new FileNotFoundException();
+//            }
+//        }
 
         switch (type) {
             case "ios": {
                 for (Icons aList : listIOS) {
                     BufferedImage img = ImageResizer.resize(inputImage, aList.width, aList.height);
                     imgs.put("ios/" + aList.name + ".png", img);
-                    ImageIO.write(img, "png", new File(file + "/" + aList.name + ".png"));
+                    //ImageIO.write(img, "png", new File(file + "/" + aList.name + ".png"));
                 }
                 break;
             }
@@ -113,7 +115,7 @@ class ImageResizer {
                 for (Icons aList : listAndroid) {
                     BufferedImage img = ImageResizer.resize(inputImage, aList.width, aList.height);
                     imgs.put("android/" + aList.type + "!" + aList.name + ".png", img);
-                    ImageIO.write(img, "png", new File(file + "/" + aList.type + "!" + aList.name + ".png"));
+                    //ImageIO.write(img, "png", new File(file + "/" + aList.type + "!" + aList.name + ".png"));
                 }
             }
             break;
