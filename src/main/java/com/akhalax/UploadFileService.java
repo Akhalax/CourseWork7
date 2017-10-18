@@ -7,8 +7,10 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Date;
+import java.util.HashMap;
 
 
 @Path("/file")
@@ -25,26 +27,28 @@ public class UploadFileService {
         String IconsFolder = null;
         String IconsZip = null;
         type = type.toLowerCase();
-        String uploadedFileLocation = "d://upload/"
+        String uploadedFileLocation = "c://upload/"
                 + fileDetail.getFileName();
+        HashMap<String, BufferedImage> IcoF = null;
+        OutputStream ZipIco = null;
 
         // save it
-        writeToFile(uploadedInputStream, uploadedFileLocation);
+        //writeToFile(uploadedInputStream, uploadedFileLocation);
 
         try {
-            IconsFolder = ImageResizer.resize(uploadedFileLocation, type);
+            IcoF = ImageResizer.resize(uploadedInputStream, type);
         } catch (IOException e) {
             System.err.println("Error resizing the image.");
             e.printStackTrace();
         }
         try {
-            IconsZip = Zip.zip(IconsFolder);
+            ZipIco = Zip.zip(IcoF);
         } catch (IOException e) {
             System.err.println("Error archiving the images.");
             e.printStackTrace();
         }
 
-        if (IconsZip == null) {
+        if (ZipIco == null) {
             return Response.serverError().entity("Empty zip archive").build();
         }
 
@@ -55,7 +59,7 @@ public class UploadFileService {
                 .fileName("Icons.zip").creationDate(new Date()).build();
 
         //return Response.status(200).entity(output).build();
-        return Response.ok(fileToSend, "application/zip").header("Content-Disposition",contentDisposition).build();
+        return Response.ok(ZipIco, "application/zip").header("Content-Disposition",contentDisposition).build();
 
     }
 

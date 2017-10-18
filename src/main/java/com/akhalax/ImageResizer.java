@@ -5,12 +5,10 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.*;
 import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
-import java.util.Objects;
 
 
 class ImageResizer {
@@ -61,16 +59,16 @@ class ImageResizer {
     /**
      * Resizes an image to a absolute width and height (the image may not be
      * proportional)
-     * @param inputImagePath Path of the original image
+     * @param inputImageReceived Stream of the original image
      * @param scaledWidth absolute width in pixels
      * @param scaledHeight absolute height in pixels
      */
-    private static BufferedImage resize(String inputImagePath,
+    private static BufferedImage resize(InputStream inputImageReceived,
                                         int scaledWidth, int scaledHeight)
             throws IOException {
         // reads input image
-        File inputFile = new File(inputImagePath);
-        BufferedImage inputImage = ImageIO.read(inputFile);
+        //File inputFile = new File(inputImagePath);
+        BufferedImage inputImage = ImageIO.read(inputImageReceived);
 
         // creates output image
         BufferedImage outputImage = new BufferedImage(scaledWidth,
@@ -84,12 +82,12 @@ class ImageResizer {
         return outputImage;
     }
 
-    static String resize(String inputImagePath, String type)
+    static HashMap<String, BufferedImage> resize(InputStream inputImage, String type)
             throws IOException {
         if (!Objects.equals(type, "ios") && !Objects.equals(type, "android")) throw new IOException("invalid type");
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss-SS");
         Date date = new Date();
-        File file = new File("D:/images/"+type);
+        File file = new File("C:/images/"+type);
         if (!file.exists()) {
             if (!file.mkdir()) {
                 throw new FileNotFoundException();
@@ -105,14 +103,16 @@ class ImageResizer {
         switch (type) {
             case "ios": {
                 for (Icons aList : listIOS) {
-                    BufferedImage img = ImageResizer.resize(inputImagePath, aList.width, aList.height);
+                    BufferedImage img = ImageResizer.resize(inputImage, aList.width, aList.height);
+                    imgs.put("ios/" + aList.name + ".png", img);
                     ImageIO.write(img, "png", new File(file + "/" + aList.name + ".png"));
                 }
                 break;
             }
             case "android": {
                 for (Icons aList : listAndroid) {
-                    BufferedImage img = ImageResizer.resize(inputImagePath, aList.width, aList.height);
+                    BufferedImage img = ImageResizer.resize(inputImage, aList.width, aList.height);
+                    imgs.put("android/" + aList.type + "!" + aList.name + ".png", img);
                     ImageIO.write(img, "png", new File(file + "/" + aList.type + "!" + aList.name + ".png"));
                 }
             }
@@ -120,8 +120,10 @@ class ImageResizer {
         }
 
 
-        return file + "/";
+        return imgs;
+        //return file + "/";
     }
 
+    private static HashMap<String, BufferedImage> imgs = new HashMap<>();
 
 }
