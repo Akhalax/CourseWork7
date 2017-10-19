@@ -1,5 +1,6 @@
 package com.akhalax;
 
+import org.apache.commons.io.FileUtils;
 import org.glassfish.jersey.media.multipart.ContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -32,7 +33,7 @@ public class UploadFileService {
         String uploadedFileLocation = "c://upload/"
                 + fileDetail.getFileName();
         HashMap<String, BufferedImage> IcoF = null;
-        OutputStream ZipIco = null;
+        InputStream ZipIco = null;
         // save it
         //writeToFile(uploadedInputStream, uploadedFileLocation);
 
@@ -60,7 +61,11 @@ public class UploadFileService {
                 .fileName("Icons.zip").creationDate(new Date()).build();
 
         //return Response.status(200).entity(output).build();
-        return Response.ok(ZipIco, "application/zip").header("Content-Disposition",contentDisposition).build();
+        return Response
+                .ok(ZipIco)
+                .type("application/zip")
+                .header("Content-Disposition",contentDisposition)
+                .build();
 
     }
 
