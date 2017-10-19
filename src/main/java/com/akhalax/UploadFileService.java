@@ -24,6 +24,8 @@ public class UploadFileService {
             @FormDataParam("file") FormDataContentDisposition fileDetail,
             @FormDataParam("device") String type) {
 
+
+
         String IconsFolder = null;
         String IconsZip = null;
         type = type.toLowerCase();
@@ -31,7 +33,6 @@ public class UploadFileService {
                 + fileDetail.getFileName();
         HashMap<String, BufferedImage> IcoF = null;
         OutputStream ZipIco = null;
-
         // save it
         //writeToFile(uploadedInputStream, uploadedFileLocation);
 

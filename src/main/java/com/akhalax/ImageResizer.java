@@ -86,8 +86,8 @@ class ImageResizer {
             throws IOException {
         if (!Objects.equals(type, "ios") && !Objects.equals(type, "android")) throw new IOException("invalid type");
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss-SS");
-        Date date = new Date();
-        File file = new File("C:/images/"+type);
+//        Date date = new Date();
+//        File file = new File("C:/images/"+type);
 
         BufferedImage inputImage = ImageIO.read(inputImageReceived);
 //        if (!file.exists()) {
