@@ -47,17 +47,6 @@ public class UploadFileService {
             return Response.serverError().entity("Empty zip archive").build();
         }
 
-//        StreamingOutput stream = new StreamingOutput() {
-//            @Override
-//            public void write(OutputStream os) throws IOException,
-//                    WebApplicationException {
-//                Writer writer = new BufferedWriter(new OutputStreamWriter(os));
-//                writer.write();
-//                writer.flush();  // <-- This is very important.  Do not forget.
-//            }
-//        };
-
-
 
         ContentDisposition contentDisposition = ContentDisposition.type("attachment")
                 .fileName("Icons.zip").creationDate(new Date()).build();
@@ -71,19 +60,6 @@ public class UploadFileService {
                 .build();
 
     }
-//    public static class FeedReturnStreamingOutput implements StreamingOutput {
-//
-//        @Override
-//        public void write(OutputStream output)
-//                throws IOException, WebApplicationException {
-//            try {
-//                for (int i = 0; i < 10; i++) {
-//                    output.write(String.format("Hello %d\n", i).getBytes());
-//                    output.flush();
-//                }
-//            } catch (IOException e) {  throw new RuntimeException(e); }
-//        }
-//    }
 
 
 

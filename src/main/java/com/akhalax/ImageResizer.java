@@ -66,9 +66,6 @@ class ImageResizer {
     private static BufferedImage resize(BufferedImage inputImage,
                                         int scaledWidth, int scaledHeight)
             throws IOException {
-        // reads input image
-        //File inputFile = new File(inputImagePath);
-        //BufferedImage inputImage = ImageIO.read(inputImageReceived);
 
         // creates output image
         BufferedImage outputImage = new BufferedImage(scaledWidth,
@@ -85,7 +82,6 @@ class ImageResizer {
     static HashMap<String, BufferedImage> resize(InputStream inputImageReceived, String type)
             throws IOException {
         if (!Objects.equals(type, "ios") && !Objects.equals(type, "android")) throw new IOException("invalid type");
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss-SS");
 //        Date date = new Date();
 //        File file = new File("C:/images/"+type);
 
@@ -123,7 +119,6 @@ class ImageResizer {
 
 
         return imgs;
-        //return file + "/";
     }
 
     private static HashMap<String, BufferedImage> imgs = new HashMap<>();
