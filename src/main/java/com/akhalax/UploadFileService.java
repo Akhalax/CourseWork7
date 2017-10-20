@@ -7,9 +7,9 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.StreamingOutput;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -32,9 +32,13 @@ public class UploadFileService {
 
         try {
             IcoF = ImageResizer.resize(uploadedInputStream, type);
-        } catch (IOException e) {
-            System.err.println("Error resizing the image.");
+        } catch (WebApplicationException e) {
+            System.err.println("Error resizing the image. Invalid type");
             e.printStackTrace();
+        }
+        catch (IOException ioe) {
+            System.err.println("Error resizing the image.");
+            ioe.printStackTrace();
         }
         try {
             ZipIco = Zip.zip(IcoF);
@@ -52,7 +56,6 @@ public class UploadFileService {
                 .fileName("Icons.zip").creationDate(new Date()).build();
 
 
-        //return Response.status(200).entity(output).build();
         return Response
                 .ok(ZipIco)
                 .type("application/zip")
@@ -60,7 +63,5 @@ public class UploadFileService {
                 .build();
 
     }
-
-
 
 }

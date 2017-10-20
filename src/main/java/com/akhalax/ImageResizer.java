@@ -1,6 +1,7 @@
 package com.akhalax;
 
 import javax.imageio.ImageIO;
+import javax.ws.rs.WebApplicationException;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.text.DateFormat;
@@ -26,6 +27,8 @@ class ImageResizer {
             this.type = type;
         }
     }
+
+    private static HashMap<String, BufferedImage> imgs = new HashMap<>();
 
     private static ArrayList<Icons> listIOS = new ArrayList<Icons>() {{
         add(new Icons(29,29,"Icon-Small", "Icons for apps"));
@@ -80,23 +83,10 @@ class ImageResizer {
     }
 
     static HashMap<String, BufferedImage> resize(InputStream inputImageReceived, String type)
-            throws IOException {
-        if (!Objects.equals(type, "ios") && !Objects.equals(type, "android")) throw new IOException("invalid type");
-//        Date date = new Date();
-//        File file = new File("C:/images/"+type);
+            throws WebApplicationException, IOException {
+        if (!Objects.equals(type, "ios") && !Objects.equals(type, "android")) throw new WebApplicationException("invalid type");
 
         BufferedImage inputImage = ImageIO.read(inputImageReceived);
-//        if (!file.exists()) {
-//            if (!file.mkdir()) {
-//                throw new FileNotFoundException();
-//            }
-//        }
-//        file = new File(file +"/" + dateFormat.format(date));
-//        if (!file.exists()) {
-//            if (!file.mkdir()) {
-//                throw new FileNotFoundException();
-//            }
-//        }
 
         switch (type) {
             case "ios": {
@@ -116,11 +106,7 @@ class ImageResizer {
             }
             break;
         }
-
-
         return imgs;
     }
-
-    private static HashMap<String, BufferedImage> imgs = new HashMap<>();
 
 }
