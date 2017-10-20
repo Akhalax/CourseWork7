@@ -1,6 +1,5 @@
 package com.akhalax;
 
-import org.apache.commons.io.FileUtils;
 import org.glassfish.jersey.media.multipart.ContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -8,6 +7,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Date;
@@ -17,25 +17,18 @@ import java.util.HashMap;
 @Path("/file")
 public class UploadFileService {
     @POST
-    @Path("/upload")
+    @Path("/upload/{type}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces({"application/zip"})
     public Response uploadFile(
             @FormDataParam("file") InputStream uploadedInputStream,
             @FormDataParam("file") FormDataContentDisposition fileDetail,
-            @FormDataParam("device") String type) {
+            @PathParam("type") String type) {
 
 
-
-        String IconsFolder = null;
-        String IconsZip = null;
         type = type.toLowerCase();
-        String uploadedFileLocation = "c://upload/"
-                + fileDetail.getFileName();
         HashMap<String, BufferedImage> IcoF = null;
-        InputStream ZipIco = null;
-        // save it
-        //writeToFile(uploadedInputStream, uploadedFileLocation);
+        byte[] ZipIco = null;
 
         try {
             IcoF = ImageResizer.resize(uploadedInputStream, type);
@@ -54,11 +47,21 @@ public class UploadFileService {
             return Response.serverError().entity("Empty zip archive").build();
         }
 
-        //File fileToSend = new File(IconsZip);
+//        StreamingOutput stream = new StreamingOutput() {
+//            @Override
+//            public void write(OutputStream os) throws IOException,
+//                    WebApplicationException {
+//                Writer writer = new BufferedWriter(new OutputStreamWriter(os));
+//                writer.write();
+//                writer.flush();  // <-- This is very important.  Do not forget.
+//            }
+//        };
+
 
 
         ContentDisposition contentDisposition = ContentDisposition.type("attachment")
                 .fileName("Icons.zip").creationDate(new Date()).build();
+
 
         //return Response.status(200).entity(output).build();
         return Response
@@ -68,29 +71,20 @@ public class UploadFileService {
                 .build();
 
     }
+//    public static class FeedReturnStreamingOutput implements StreamingOutput {
+//
+//        @Override
+//        public void write(OutputStream output)
+//                throws IOException, WebApplicationException {
+//            try {
+//                for (int i = 0; i < 10; i++) {
+//                    output.write(String.format("Hello %d\n", i).getBytes());
+//                    output.flush();
+//                }
+//            } catch (IOException e) {  throw new RuntimeException(e); }
+//        }
+//    }
 
-    // save uploaded file to new location
-    private void writeToFile(InputStream uploadedInputStream,
-                             String uploadedFileLocation) {
 
-        try {
-            new FileOutputStream(new File(
-                    uploadedFileLocation));
-            OutputStream out;
-            int read;
-            byte[] bytes = new byte[1024];
-
-            out = new FileOutputStream(new File(uploadedFileLocation));
-            while ((read = uploadedInputStream.read(bytes)) != -1) {
-                out.write(bytes, 0, read);
-            }
-            out.flush();
-            out.close();
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-
-    }
 
 }

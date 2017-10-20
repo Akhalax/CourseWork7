@@ -107,7 +107,7 @@ class ImageResizer {
                 for (Icons aList : listIOS) {
                     BufferedImage img = ImageResizer.resize(inputImage, aList.width, aList.height);
                     imgs.put("ios/" + aList.name + ".png", img);
-                    //ImageIO.write(img, "png", new File(file + "/" + aList.name + ".png"));
+                    //ImageIO.write(img, "png", new File("D:\\images\\ios" + "/" + aList.name + ".png"));
                 }
                 break;
             }
