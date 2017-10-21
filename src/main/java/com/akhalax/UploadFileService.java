@@ -1,5 +1,7 @@
 package com.akhalax;
 
+import com.akhalax.errorhandling.AppException;
+import com.akhalax.errorhandling.AppExceptionMapper;
 import org.glassfish.jersey.media.multipart.ContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -19,36 +21,34 @@ public class UploadFileService {
     @POST
     @Path("/upload/{type}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces({"application/zip"})
+    @Produces({"application/zip", "application/json"})
     public Response uploadFile(
             @FormDataParam("file") InputStream uploadedInputStream,
             @FormDataParam("file") FormDataContentDisposition fileDetail,
-            @PathParam("type") String type) {
+            @PathParam("type") String type) throws AppException {
 
 
         type = type.toLowerCase();
-        HashMap<String, BufferedImage> IcoF = null;
-        byte[] ZipIco = null;
+        HashMap<String, BufferedImage> IcoF;
+        byte[] ZipIco;
 
         try {
             IcoF = ImageResizer.resize(uploadedInputStream, type);
-        } catch (WebApplicationException e) {
-            System.err.println("Error resizing the image. Invalid type");
-            e.printStackTrace();
+        } catch (AppException e) {
+            throw new AppException(e);
         }
         catch (IOException ioe) {
-            System.err.println("Error resizing the image.");
-            ioe.printStackTrace();
+            throw new WebApplicationException(ioe);
         }
+
         try {
             ZipIco = Zip.zip(IcoF);
-        } catch (IOException e) {
-            System.err.println("Error archiving the images.");
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new AppException(500, "Error while zipping images.", "Server error while in zip-method.");
         }
 
         if (ZipIco == null) {
-            return Response.serverError().entity("Empty zip archive").build();
+            throw new AppException(500, "Empty archive", "Something went wrong while zipping images. Archive is empty.");
         }
 
 

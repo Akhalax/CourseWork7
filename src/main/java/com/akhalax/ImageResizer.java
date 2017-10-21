@@ -1,15 +1,14 @@
 package com.akhalax;
 
+import com.akhalax.errorhandling.AppException;
+
 import javax.imageio.ImageIO;
-import javax.ws.rs.WebApplicationException;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.awt.Graphics2D;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 class ImageResizer {
@@ -83,8 +82,7 @@ class ImageResizer {
     }
 
     static HashMap<String, BufferedImage> resize(InputStream inputImageReceived, String type)
-            throws WebApplicationException, IOException {
-        if (!Objects.equals(type, "ios") && !Objects.equals(type, "android")) throw new WebApplicationException("invalid type");
+            throws AppException, IOException {
 
         BufferedImage inputImage = ImageIO.read(inputImageReceived);
 
@@ -105,6 +103,8 @@ class ImageResizer {
                 }
             }
             break;
+            default:
+                throw new AppException(400, "Invalid type of device.", "At the moment there are 2 available types: /ios and /android. Please use one of them.");
         }
         return imgs;
     }

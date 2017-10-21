@@ -24,6 +24,7 @@ dependencies {
     compile "org.glassfish.jersey:jersey-bom:$jerseyVersion"
     compile "org.glassfish.jersey.containers:jersey-container-servlet-core:$jerseyVersion"
     compile group: 'org.glassfish.jersey.media', name: 'jersey-media-multipart', version: jerseyVersion
+    compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.3'
 
 
 

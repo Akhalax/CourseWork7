@@ -15,11 +15,9 @@ class Zip {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
              ZipOutputStream out = new ZipOutputStream(baos))
         {
-
             for (Map.Entry mEntry : folder.entrySet()) {
                 String name = (String) mEntry.getKey();
                 BufferedImage img = (BufferedImage) mEntry.getValue();
-                //FileInputStream fi = new FileInputStream(img);
                 ZipEntry entry;
                 if (name.contains("android")) {
                     entry = new ZipEntry(name.substring(0, name.indexOf("!")) + "/" + name.substring(name.indexOf("!") + 1, name.length()));
