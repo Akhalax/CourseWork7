@@ -1,6 +1,9 @@
 package com.akhalax.errorhandling;
 
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -21,7 +24,10 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable> {
         errorMessage.setMessage(ex.getMessage());
         StringWriter errorStackTrace = new StringWriter();
         ex.printStackTrace(new PrintWriter(errorStackTrace));
-        errorMessage.setDeveloperMessage(errorStackTrace.toString());
+        Gson gson = new Gson();
+        StackTraceElement elements[] = ex.getStackTrace();
+        String json = gson.toJson(elements);
+        errorMessage.setDeveloperMessage(json);
 
         return Response.status(errorMessage.getStatus())
                 .entity(errorMessage)

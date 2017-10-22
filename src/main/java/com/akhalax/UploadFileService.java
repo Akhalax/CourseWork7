@@ -1,7 +1,6 @@
 package com.akhalax;
 
 import com.akhalax.errorhandling.AppException;
-import com.akhalax.errorhandling.AppExceptionMapper;
 import org.glassfish.jersey.media.multipart.ContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -35,6 +34,7 @@ public class UploadFileService {
         try {
             IcoF = ImageResizer.resize(uploadedInputStream, type);
         } catch (AppException e) {
+            e.printStackTrace();
             throw new AppException(e);
         }
         catch (IOException ioe) {
@@ -44,7 +44,7 @@ public class UploadFileService {
         try {
             ZipIco = Zip.zip(IcoF);
         } catch (Exception e) {
-            throw new AppException(500, "Error while zipping images.", "Server error while in zip-method.");
+            throw new AppException(500, "Error while zipping images.", "Server error in zip-method.");
         }
 
         if (ZipIco == null) {

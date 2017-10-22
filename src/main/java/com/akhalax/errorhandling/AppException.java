@@ -3,15 +3,14 @@ package com.akhalax.errorhandling;
 public class AppException extends Exception {
 
     private static final long serialVersionUID = -8999932578270387947L;
-
     /**
      * contains redundantly the HTTP status of the response sent back to the client in case of error, so that
      * the developer does not have to look into the response headers. If null a default
      */
-    private Integer status;
+    Integer status;
 
     /** detailed error description for developers*/
-    private String developerMessage;
+    String developerMessage;
 
     public AppException(int status, String message,
                         String developerMessage) {
@@ -28,20 +27,20 @@ public class AppException extends Exception {
 
     AppException() { }
 
-    int getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    void setStatus(int status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
 
-    private String getDeveloperMessage() {
+    public String getDeveloperMessage() {
         return developerMessage;
     }
 
-    void setDeveloperMessage(String developerMessage) {
+    public void setDeveloperMessage(String developerMessage) {
         this.developerMessage = developerMessage;
     }
 

@@ -4,47 +4,54 @@ import org.apache.commons.beanutils.BeanUtils;
 
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.lang.reflect.InvocationTargetException;
 
 @XmlRootElement
-class ErrorMessage {
+public class ErrorMessage {
 
     /** contains the same HTTP Status code returned by the server */
-    private int status;
+    @XmlElement(name = "status")
+    int status;
+
 
     /** message describing the error*/
-    private String message;
+    @XmlElement(name = "message")
+    String message;
+
 
     /** extra information that might useful for developers */
-    private String developerMessage;
+    @XmlElement(name = "developerMessage")
+    String developerMessage;
 
-    int getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    void setStatus(int status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    String getMessage() {
+
+    public String getMessage() {
         return message;
     }
 
-    void setMessage(String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
-    String getDeveloperMessage() {
+    public String getDeveloperMessage() {
         return developerMessage;
     }
 
-    void setDeveloperMessage(String developerMessage) {
+    public void setDeveloperMessage(String developerMessage) {
         this.developerMessage = developerMessage;
     }
 
 
-    ErrorMessage(AppException ex){
+    public ErrorMessage(AppException ex){
         try {
             BeanUtils.copyProperties(this, ex);
         } catch (IllegalAccessException | InvocationTargetException e) {
@@ -53,10 +60,10 @@ class ErrorMessage {
         }
     }
 
-    ErrorMessage(NotFoundException ex){
+    public ErrorMessage(NotFoundException ex){
         this.status = Response.Status.NOT_FOUND.getStatusCode();
         this.message = ex.getMessage();
     }
 
-    ErrorMessage() {}
+    public ErrorMessage() {}
 }
