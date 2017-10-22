@@ -85,6 +85,7 @@ class ImageResizer {
             throws AppException, IOException {
 
         BufferedImage inputImage = ImageIO.read(inputImageReceived);
+        if (inputImage == null) throw new AppException(400,"Uploaded file is not an image. Please upload an image.", "The file could not be converted, it's not an image.");
 
         switch (type) {
             case "ios": {
