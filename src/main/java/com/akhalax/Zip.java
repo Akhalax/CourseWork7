@@ -19,8 +19,8 @@ class Zip {
                 String name = (String) mEntry.getKey();
                 BufferedImage img = (BufferedImage) mEntry.getValue();
                 ZipEntry entry;
-                if (name.contains("android")) {
-                    entry = new ZipEntry(name.substring(0, name.indexOf("!")) + "/" + name.substring(name.indexOf("!") + 1, name.length()));
+                if (!name.contains("ios")) {
+                    entry = new ZipEntry(name.substring(name.indexOf("/") + 1, name.indexOf("!"))  + "/" + name.substring(name.indexOf("!") + 1, name.length()));
                 } else {
                     entry = new ZipEntry(name.substring(name.indexOf("/") + 1, name.length()));
                 }

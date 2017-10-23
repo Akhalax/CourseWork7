@@ -1,6 +1,7 @@
 package com.akhalax;
 
 import com.akhalax.errorhandling.AppException;
+import com.akhalax.icons.ImageResizer;
 import org.glassfish.jersey.media.multipart.ContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
