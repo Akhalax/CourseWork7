@@ -2,7 +2,6 @@ package com.akhalax.errorhandling;
 
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;

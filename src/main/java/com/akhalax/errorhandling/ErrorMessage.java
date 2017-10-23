@@ -4,7 +4,6 @@ import org.apache.commons.beanutils.BeanUtils;
 
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.lang.reflect.InvocationTargetException;
 
@@ -12,18 +11,13 @@ import java.lang.reflect.InvocationTargetException;
 public class ErrorMessage {
 
     /** contains the same HTTP Status code returned by the server */
-    @XmlElement(name = "status")
-    int status;
-
+    private int status;
 
     /** message describing the error*/
-    @XmlElement(name = "message")
-    String message;
-
+    private String message;
 
     /** extra information that might useful for developers */
-    @XmlElement(name = "developerMessage")
-    String developerMessage;
+    private String developerMessage;
 
     public int getStatus() {
         return status;

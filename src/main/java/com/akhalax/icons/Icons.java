@@ -33,7 +33,7 @@ class Icons {
     }
 
 
-    HashMap<String, BufferedImage> imageStorage;
+    protected HashMap<String, BufferedImage> imageStorage;
 
     Icons(int width, int height, String name) {
         this.width = width;

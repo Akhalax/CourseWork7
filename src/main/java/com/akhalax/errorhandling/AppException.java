@@ -7,10 +7,10 @@ public class AppException extends Exception {
      * contains redundantly the HTTP status of the response sent back to the client in case of error, so that
      * the developer does not have to look into the response headers. If null a default
      */
-    Integer status;
+    private Integer status;
 
     /** detailed error description for developers*/
-    String developerMessage;
+    private String developerMessage;
 
     public AppException(int status, String message,
                         String developerMessage) {
