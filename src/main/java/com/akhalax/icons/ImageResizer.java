@@ -13,20 +13,6 @@ import java.util.HashMap;
 
 public class ImageResizer {
 
-    public static class Icons {
-        int width;
-        int height;
-        String name;
-        String type;
-
-        Icons(int width, int height, String name, String type) {
-            this.width = width;
-            this.height = height;
-            this.name = name;
-            this.type = type;
-        }
-    }
-
     private static HashMap<String, BufferedImage> imageStorage = new HashMap<>();
 
     /**
