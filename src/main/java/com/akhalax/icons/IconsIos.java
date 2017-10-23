@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class IconsIos extends Icons implements resizer {
+public class IconsIos extends Icons implements Resizer {
     private IconsIos(int width, int height, String name) {
         super(width, height, name);
     }
@@ -39,11 +39,11 @@ public class IconsIos extends Icons implements resizer {
         for (IconsIos aList : listIOS) {
             BufferedImage img;
             try {
-                img = ImageResizer.resize(inputImage, aList.width, aList.height);
+                img = ImageResizer.resize(inputImage, aList.getWidth(), aList.getHeight());
             } catch (IOException e) {
                 throw new AppException(500, "Cannot resize an image.", "IOException while resizing an image.");
             }
-            imageStorage.put("ios/" + aList.name + ".png", img);
+            imageStorage.put("ios/" + aList.getName() + ".png", img);
         }
 
         return imageStorage;

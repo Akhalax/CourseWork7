@@ -13,8 +13,6 @@ import java.util.HashMap;
 
 public class ImageResizer {
 
-    private static HashMap<String, BufferedImage> imageStorage = new HashMap<>();
-
     /**
      * Resizes an image to a absolute width and height (the image may not be
      * proportional)
@@ -44,6 +42,7 @@ public class ImageResizer {
         BufferedImage inputImage = ImageIO.read(inputImageReceived);
         if (inputImage == null) throw new AppException(400,"Uploaded file is not an image. Please upload an image.", "The file could not be converted, it's not an image.");
 
+        HashMap<String, BufferedImage> imageStorage;
         switch (type) {
             case "ios": {
                 IconsIos iconsIos = new IconsIos();

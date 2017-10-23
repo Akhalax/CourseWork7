@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class IconsAndroid extends Icons implements resizer {
+public class IconsAndroid extends Icons implements Resizer {
     private String type;
 
     private IconsAndroid(int width, int height, String name, String type) {
@@ -16,6 +16,15 @@ public class IconsAndroid extends Icons implements resizer {
     }
 
     IconsAndroid(){}
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
 
     private static ArrayList<IconsAndroid> listAndroid = new ArrayList<IconsAndroid>() {{
         add(new IconsAndroid(48,48, "mdpi", "Launcher icons"));
@@ -39,11 +48,11 @@ public class IconsAndroid extends Icons implements resizer {
         for (IconsAndroid aList : listAndroid) {
             BufferedImage img;
             try {
-                img = ImageResizer.resize(inputImage, aList.width, aList.height);
+                img = ImageResizer.resize(inputImage, aList.getWidth(), aList.getHeight());
             } catch (IOException e) {
                 throw new AppException(500, "Cannot resize an image.", "IOException while resizing an image.");
             }
-            imageStorage.put("android/" + aList.type + "!" + aList.name + ".png", img);
+            imageStorage.put("android/" + aList.type + "!" + aList.getName() + ".png", img);
         }
 
         return imageStorage;
